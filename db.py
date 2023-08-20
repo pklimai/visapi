@@ -37,12 +37,12 @@ if __name__ == "__main__":
                         stderr=subprocess.PIPE,
                         universal_newlines=True,
                         bufsize=0)
-    r = shell.communicate("cd /scratch1/pklimai/bmnroot/build/ \n  . config.sh  \n")
-    print(r)
+    r = shell.communicate(
+         "cd /scratch1/pklimai/bmnroot/build/ \n"+
+         ". config.sh \n" + 
+         "cd /scratch1/pklimai/visapi \n" + 
+         "root get_geometry_json.C"
+         )
+    print(r[0])
         
-    #r = shell.communicate(". config.sh")
-    print(r)
-    #shell.stdin.close()
-    #for line in shell.stdout:
-    #    print(line.strip())
 

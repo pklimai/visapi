@@ -1,15 +1,12 @@
+import psycopg2
+import subprocess
+
 UNI_DB_USERNAME = "db_reader"
 UNI_DB_PASSWORD = "reader_pass"
 UNI_DB_HOST = "nc13.jinr.ru"
 UNI_DB_NAME = "bmn_db"
 
-requested_period = 7
-requested_run = 2077 #2076
-
-import psycopg2
-import subprocess
-
-if __name__ == "__main__":
+def get_geometry_json(requested_period, requested_run):
     try:
         conn = psycopg2.connect(user=UNI_DB_USERNAME, password=UNI_DB_PASSWORD, host=UNI_DB_HOST, database=UNI_DB_NAME)
         # print(conn)
@@ -37,12 +34,15 @@ if __name__ == "__main__":
                         stderr=subprocess.PIPE,
                         universal_newlines=True,
                         bufsize=0)
-    r = shell.communicate(
+    output = shell.communicate(
          "cd /scratch1/pklimai/bmnroot/build/ \n"+
          ". config.sh \n" + 
          "cd /scratch1/pklimai/visapi \n" + 
          f"""root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")'"""
          )
-    print("\n".join(r[0].splitlines()[15:]))
+    return "\n".join(output[0].splitlines()[15:])
         
+
+if __name__ == "__main__":
+    print(get_geometry_json(7, 2076))
 

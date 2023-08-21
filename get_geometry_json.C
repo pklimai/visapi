@@ -5,7 +5,7 @@ void get_geometry_json(
         char* filepath = (char*) "/lhep/users/pklimai/geometry_run_7-2076.root") 
 {
 
-    cout << "I have inputs: " << period_number << " and " << run_number << endl;
+    // cout << "I have inputs: " << period_number << " and " << run_number << endl;
 
     int res_code = UniRun::ReadGeometryFile(period_number, run_number, (char*)filepath);
     if (res_code != 0)
@@ -35,10 +35,10 @@ void get_geometry_json(
     }
 
     TGeoNode* N = gGeoManager->GetTopNode();
-    cout<<"The top node of gGeoManager is "<<N->GetName()<<endl;
+    // cout<<"The top node of gGeoManager is "<<N->GetName()<<endl;
 
     TGeoManager *tgm = gGeoManager;
-    cout << tgm;
+    // cout << tgm;
 
     TString tgmjson = TBufferJSON::ToJSON(tgm);
     cout << tgmjson;

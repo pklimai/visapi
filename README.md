@@ -15,3 +15,9 @@ source env/bin/activate
 python app.py
 ```
 
+To run in background even when user logs out:
+```
+source env/bin/activate
+nohup python app.py &
+```
+

@@ -15,3 +15,7 @@ def geometry(period_number, run_number):
     """ Actually get geometry from ROOT and return it to client """
     return get_geometry_json(period_number, run_number)
 
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=50000, debug=True)
+

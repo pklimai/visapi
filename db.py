@@ -6,6 +6,9 @@ UNI_DB_PASSWORD = "reader_pass"
 UNI_DB_HOST = "nc13.jinr.ru"
 UNI_DB_NAME = "bmn_db"
 
+BMNROOT_DIR = "/scratch1/pklimai/bmnroot/build/"
+VISAPI_DIR = "/scratch1/pklimai/visapi"
+
 def get_geometry_json(requested_period, requested_run):
     try:
         conn = psycopg2.connect(user=UNI_DB_USERNAME, password=UNI_DB_PASSWORD, host=UNI_DB_HOST, database=UNI_DB_NAME)
@@ -18,7 +21,7 @@ def get_geometry_json(requested_period, requested_run):
         cursor.execute(f"SELECT root_geometry FROM run_geometry WHERE geometry_id={geometry_id}")
         record = cursor.fetchone()
         # print(record)
-        filename = f"geometry_{requested_period}_{requested_run}.root"
+        filename = f"geometries/geometry_{requested_period}_{requested_run}.root"
         with open(filename, "wb") as f:
             f.write(record[0]) 
     finally:
@@ -27,22 +30,19 @@ def get_geometry_json(requested_period, requested_run):
 
     # print(filename)
 
-    shell = subprocess.Popen(["/bin/bash"], 
-                        shell=False,
-                        stdin =subprocess.PIPE,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        universal_newlines=True,
-                        bufsize=0)
+    shell = subprocess.Popen(["/bin/bash"], shell=False,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            universal_newlines=True, bufsize=0)
     output = shell.communicate(
-         "cd /scratch1/pklimai/bmnroot/build/ \n"+
-         ". config.sh \n" + 
-         "cd /scratch1/pklimai/visapi \n" + 
-         f"""root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")'"""
-         )
+         f"""cd {BMNROOT_DIR} \n
+             . config.sh \n 
+             cd {VISAPI_DIR} \n 
+             root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")' \n
+         """)
     return "\n".join(output[0].splitlines()[15:])
         
 
 if __name__ == "__main__":
+    # Testing ROOT communication
     print(get_geometry_json(7, 2076))
 

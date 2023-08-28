@@ -3,6 +3,7 @@ from db import get_geometry_json, get_event_json
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def dummy():
     """ For testing - always return fixed JSON from base URL """

@@ -3,7 +3,9 @@ import subprocess
 
 from config import *
 
+
 def get_geometry_json(requested_period, requested_run):
+    """ Return JSON string with geometry of given period and run """
     try:
         conn = psycopg2.connect(user=UNI_DB_USERNAME, password=UNI_DB_PASSWORD, host=UNI_DB_HOST, database=UNI_DB_NAME)
         # print(conn)
@@ -27,8 +29,8 @@ def get_geometry_json(requested_period, requested_run):
         cursor.close()
 
     shell = subprocess.Popen(["/bin/bash"], shell=False,
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            universal_newlines=True, bufsize=0)
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                universal_newlines=True, bufsize=0)
     output = shell.communicate(
          f"""source {SOURCE_FILE_1} \n
              source {SOURCE_FILE_2} \n
@@ -38,6 +40,7 @@ def get_geometry_json(requested_period, requested_run):
 
 
 def get_event_json(event_idx: int):
+    """ Return JSON string with event's tracks, for given index of event in a file """
     shell = subprocess.Popen(["/bin/bash"], shell=False,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             universal_newlines=True, bufsize=0)
@@ -49,9 +52,8 @@ def get_event_json(event_idx: int):
     return "\n".join(output[0].splitlines()[19:-1])
 
 
-
 if __name__ == "__main__":
     # Testing ROOT communication:
-    #print(get_geometry_json(7, 2076))
-    #print(get_geometry_json(8, 8000))
+    # print(get_geometry_json(7, 2076))
+    # print(get_geometry_json(8, 8000))
     print(get_event_json(3))

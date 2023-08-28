@@ -167,7 +167,7 @@ int get_event_json(TString dstFilePath = "", enumTracking tracking = VectorFinde
         }
         TString cbmStsTracksjson = TBufferJSON::ToJSON(&cbmStsTracks);
         cout << cbmStsTracksjson;
-        cout << "Overall local tracks: " << cbmStsTracks.size() << endl;
+        //cout << "Overall local tracks: " << cbmStsTracks.size() << endl;
 
 
         // Getting global tracks and their corresponding components
@@ -225,7 +225,7 @@ int get_event_json(TString dstFilePath = "", enumTracking tracking = VectorFinde
 
         TString bmnGlobalTracksjson = TBufferJSON::ToJSON(&bmnGlobalTracks);
         cout << bmnGlobalTracksjson;
-        cout << "Overall global tracks: " << bmnGlobalTracks.size() << endl;
+        // cout << "Overall global tracks: " << bmnGlobalTracks.size() << endl;
 
     }// for (Int_t iEvent = 0; iEvent < out->GetEntries(); iEvent++)
 

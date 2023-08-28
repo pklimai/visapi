@@ -20,7 +20,7 @@ def get_geometry_json(requested_period, requested_run):
         with open(filename, "wb") as f:
             f.write(record[0]) 
     except Exception as e:
-        return f'\{"error": {str(e)}\}'
+        return f'{{"error": "{str(e)}"}}'
     finally:
         conn.close()
         cursor.close()

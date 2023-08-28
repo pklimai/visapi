@@ -1,13 +1,7 @@
 import psycopg2
 import subprocess
 
-UNI_DB_USERNAME = "db_reader"
-UNI_DB_PASSWORD = "reader_pass"
-UNI_DB_HOST = "nc13.jinr.ru"
-UNI_DB_NAME = "bmn_db"
-
-BMNROOT_DIR = "/scratch1/pklimai/bmnroot/build/"
-VISAPI_DIR = "/scratch1/pklimai/visapi"
+from config import *
 
 def get_geometry_json(requested_period, requested_run):
     try:
@@ -22,27 +16,27 @@ def get_geometry_json(requested_period, requested_run):
         record = cursor.fetchone()
         # print(record)
         filename = f"geometries/geometry_{requested_period}_{requested_run}.root"
+        # print(filename)
         with open(filename, "wb") as f:
             f.write(record[0]) 
+    except Exception as e:
+        return f'\{"error": {str(e)}\}'
     finally:
         conn.close()
         cursor.close()
-
-    # print(filename)
 
     shell = subprocess.Popen(["/bin/bash"], shell=False,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             universal_newlines=True, bufsize=0)
     output = shell.communicate(
-         f"""cd {BMNROOT_DIR} \n
-             . config.sh \n 
-             cd {VISAPI_DIR} \n 
+         f"""source {SOURCE_FILE_1} \n
+             source {SOURCE_FILE_2} \n
              root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")' \n
          """)
-    return "\n".join(output[0].splitlines()[15:])
+    return "\n".join(output[0].splitlines()[17:])
         
 
 if __name__ == "__main__":
     # Testing ROOT communication
-    print(get_geometry_json(7, 2076))
-
+    #print(get_geometry_json(7, 2076))
+    print(get_geometry_json(8, 8000))

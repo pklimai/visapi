@@ -15,6 +15,7 @@ def get_geometry_json(requested_period, requested_run):
         cursor.execute(f"SELECT root_geometry FROM run_geometry WHERE geometry_id={geometry_id}")
         record = cursor.fetchone()
         # print(record)
+        # TODO - temp directory must be configurable
         filename = f"geometries/geometry_{requested_period}_{requested_run}.root"
         # print(filename)
         with open(filename, "wb") as f:
@@ -34,9 +35,23 @@ def get_geometry_json(requested_period, requested_run):
              root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")' \n
          """)
     return "\n".join(output[0].splitlines()[17:])
-        
+
+
+def get_event_json(event_idx: int):
+    shell = subprocess.Popen(["/bin/bash"], shell=False,
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            universal_newlines=True, bufsize=0)
+    output = shell.communicate(
+         f"""source {SOURCE_FILE_1} \n
+             source {SOURCE_FILE_2} \n
+             root 'get_event_json.C("{EVENTS_FILENAME}", {event_idx})' \n
+         """)
+    return "\n".join(output[0].splitlines()[19:-1])
+
+
 
 if __name__ == "__main__":
-    # Testing ROOT communication
+    # Testing ROOT communication:
     #print(get_geometry_json(7, 2076))
-    print(get_geometry_json(8, 8000))
+    #print(get_geometry_json(8, 8000))
+    print(get_event_json(3))

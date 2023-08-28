@@ -5,3 +5,6 @@ UNI_DB_NAME = "bmn_db"
 
 SOURCE_FILE_1 = "/cvmfs/nica.jinr.ru/centos7/bmn/env.sh"
 SOURCE_FILE_2 = "/scratch1/pklimai/bmnroot/build/config.sh"
+
+# Fix for now
+EVENTS_FILENAME = "/eos/nica/bmn/exp/dst/run8/dev_20230807/mpd_run_Top_8000_ev1_p8.root"

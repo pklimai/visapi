@@ -7,4 +7,4 @@ SOURCE_FILE_1 = "/cvmfs/nica.jinr.ru/centos7/bmn/env.sh"
 SOURCE_FILE_2 = "/scratch1/pklimai/bmnroot/build/config.sh"
 
 # We read from a fixed file for now
-EVENTS_FILENAME = "/eos/nica/bmn/exp/dst/run8/dev_20230807/mpd_run_Top_8000_ev1_p8.root"
+EVENTS_FILENAME = "/eos/nica/bmn/exp/dst/run8/dev_vf_20230807/mpd_run_Top_8000_ev1_p8.root"

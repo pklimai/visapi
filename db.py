@@ -21,7 +21,7 @@ def get_geometry_json(requested_period, requested_run):
         filename = f"geometries/geometry_{requested_period}_{requested_run}.root"
         # print(filename)
         with open(filename, "wb") as f:
-            f.write(record[0]) 
+            f.write(record[0])
     except Exception as e:
         return f'{{"error": "{str(e)}"}}'
     finally:
@@ -36,7 +36,11 @@ def get_geometry_json(requested_period, requested_run):
              source {SOURCE_FILE_2} \n
              root 'get_geometry_json.C({requested_period}, {requested_run}, "{filename}")' \n
          """)
-    return "\n".join(output[0].splitlines()[17:])
+    lines = output[0].splitlines()
+    i = 0
+    while not lines[i].startswith("Processing get_geometry_json.C"):
+        i += 1
+    return "\n".join(lines[(i+1):])
 
 
 def get_event_json(event_idx: int):
@@ -55,5 +59,5 @@ def get_event_json(event_idx: int):
 if __name__ == "__main__":
     # Testing ROOT communication:
     # print(get_geometry_json(7, 2076))
-    # print(get_geometry_json(8, 8000))
-    print(get_event_json(3))
+    print(get_geometry_json(8, 8000))
+    # print(get_event_json(3))

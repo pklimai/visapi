@@ -43,7 +43,7 @@ def get_geometry_json(requested_period, requested_run):
     return "\n".join(lines[(i+1):])
 
 
-def get_event_json(event_idx: int):
+def get_event_json(event_idx: int, filename: str):
     """ Return JSON string with event's tracks, for given index of event in a file """
     shell = subprocess.Popen(["/bin/bash"], shell=False,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,

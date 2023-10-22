@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response, request
 from db import get_geometry_json, get_event_json
 
 app = Flask(__name__)
@@ -19,8 +19,15 @@ def geometry(period_number, run_number):
 
 @app.route('/event/<event_idx>')
 def event(event_idx):
-    """ Get event number event_idx from a given file """
-    return get_event_json(event_idx)
+    """ Get event number event_idx from a given file.
+        Path to the file is supplied as a query parameter \"file\" """
+    try:
+        filename = request.args["file"]
+    except KeyError as e:
+        return Response(f'{{"error": "{str(e)}"}}', status=400)
+
+    print(f"filename={filename}")
+    return get_event_json(event_idx, filename)
 
 
 if __name__ == "__main__":

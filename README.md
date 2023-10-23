@@ -37,6 +37,11 @@ GET /geometry/<period>/<run>
 To get particle tracks JSON for event:
 
 ```
-GET /event/<event_idx>
+GET /event/<event_idx>?file=<filename>
 ```
-(e.g. `/event/0`, `/event/1` and all other indexes less than `dataChain->GetEntries()`).
+with slashes in the filename escaped as `%2F`. For example,
+```
+/event/0?file=%2Fpath%2Fto%2Ffile
+/event/1?file=another%2Ffile
+```
+and all other indexes less than `dataChain->GetEntries()`.

@@ -14,7 +14,12 @@ def dummy():
 @app.route('/geometry/<period_number>/<run_number>')
 def geometry(period_number, run_number):
     """ Actually get geometry from ROOT and return it to client """
-    return get_geometry_json(period_number, run_number)
+    response = Response(
+        get_geometry_json(period_number, run_number),
+        content_type="application/json; charset=utf-8"
+    )
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 
 @app.route('/event/<event_idx>')
@@ -24,10 +29,13 @@ def event(event_idx):
     try:
         filename = request.args["file"]
     except KeyError as e:
-        return Response(f'{{"error": "{str(e)}"}}', status=400)
+        response = Response(f'{{"error": "{str(e)}"}}', status=400)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
-    print(f"filename={filename}")
-    return get_event_json(event_idx, filename)
+    response = Response(get_event_json(event_idx, filename))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 
 if __name__ == "__main__":

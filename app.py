@@ -1,7 +1,13 @@
 from flask import Flask, Response, request
+from flask_cors import CORS
 from db import get_geometry_json, get_event_json
 
 app = Flask(__name__)
+# Enable CORS headers in all responses.
+# You should write something like 
+#       CORS(app, resources={r"/*" : {"origins": "bmn-app.jinr.ru"}})
+# to limit resource sharing to specific web applications.
+CORS(app)
 
 
 @app.route('/')
@@ -14,12 +20,7 @@ def dummy():
 @app.route('/geometry/<period_number>/<run_number>')
 def geometry(period_number, run_number):
     """ Actually get geometry from ROOT and return it to client """
-    response = Response(
-        get_geometry_json(period_number, run_number),
-        content_type="application/json; charset=utf-8"
-    )
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
+    return Response(get_geometry_json(period_number, run_number))
 
 
 @app.route('/event/<event_idx>')
@@ -29,13 +30,9 @@ def event(event_idx):
     try:
         filename = request.args["file"]
     except KeyError as e:
-        response = Response(f'{{"error": "{str(e)}"}}', status=400)
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
+        return Response(f'{{"error": "{str(e)}"}}', status=400)
 
-    response = Response(get_event_json(event_idx, filename))
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
+    return Response(get_event_json(event_idx, filename))
 
 
 if __name__ == "__main__":

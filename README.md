@@ -18,6 +18,12 @@ source env/bin/activate
 python app.py
 ```
 
+Run production server:
+```
+source env/bin/activate
+uwsgi --ini uwsgi.ini
+```
+
 To run in background even when user logs out:
 ```
 source env/bin/activate
